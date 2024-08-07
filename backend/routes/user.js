@@ -9,16 +9,16 @@ const zod = require("zod");
 const signupSchema = zod.object({
   username: zod.string(),
   password: zod.string(),
-  firstname: zod.string(),
   email: zod.string(),
 });
 
 router.post("/signup", async (req, res, next) => {
   const body = req.body;
-  const { success } = signupSchema.safeParse(req.body);
-  if (!success) {
+
+  const { sucess } = signupSchema.safeParse(req.body);
+  if (!sucess) {
     return res.json({
-      msg: "Not valid inputs",
+      msg: "Enter valid details",
     });
   }
 
@@ -28,19 +28,15 @@ router.post("/signup", async (req, res, next) => {
 
   if (user._id) {
     return res.json({
-      msg: "Already in Database",
+      mess: "Already present in DATABASE",
     });
   }
 
   const dbUser = await User.create(body);
-  const token = jwt.sign(
-    {
-      userId: dbUser._id,
-    },
-    JWT_SECRET
-  );
+  const token = jwt.sign({ userID: dbUser._id }, JWT_SECRET);
+
   res.json({
-    mess: "User Created sucessfully",
+    msg: "User Created successfully",
     token: token,
   });
 });
@@ -50,35 +46,29 @@ const signinSchema = zod.object({
   password: zod.string(),
 });
 
-router.post("/signin", async (res, req, next) => {
+router.post("/signin", async (req, res, next) => {
   const body = req.body;
+
   const { sucess } = signinSchema.safeParse(req.body);
   if (!sucess) {
-    res.json({
-      mess: "Something went wrong",
+    return res.json({
+      msg: "Enter valid details",
     });
   }
 
   const user = await User.findOne({
     username: body.username,
-    password: req.body.password,
+    password: body.password,
   });
 
-  if (!user) {
-    return res.json({
-      mess: "Invalid credentials",
-    });
+  if (!user._id) {
+    return res.json({ msg: "Not a user" });
   }
 
-  const token = jwt.sign(
-    {
-      userID: user._id,
-    },
-    JWT_SECRET
-  );
+  const token = jwt.sign({ userID: user._id }, JWT_SECRET);
   res.json({
     token: token,
-  }); 
+  });
 });
 
 export const userRouter = express.Router();
