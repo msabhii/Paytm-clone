@@ -1,20 +1,23 @@
 import JWT_SECRET from "./config";
 
 const jwt = require("jsonwebtoken");
-export const authMiddleware = (req, res, next) => {
+export const authMiddleware = (req, req, next) => {
   const authHeader = req.headers.authorization;
-  if (!authHeader) {
+
+  if (!authHeader || !authHeader.startsWith("Bearer")) {
     return res.json({
-      msg: "something went wrong",
+      msg: "Something went Wrong",
     });
   }
+
   const token = authHeader.split(" ")[1];
 
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
-    req.userId = decoded.userId;
+    req.userID = decoded.userID;
     next();
   } catch (error) {
-    return res.status(403).json({});
+    res.status(403).json({}); 
   }
 };
+  
