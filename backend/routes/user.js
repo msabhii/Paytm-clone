@@ -1,6 +1,6 @@
-import JWT_SECRET from "../config";
-import { User } from "../db";
-import { authMiddleware } from "../middleware";
+const JWT_SECRET = require("../config");
+const { User, Account } = require("../db");
+const { authMiddleware } = require("../middleware");
 const jwt = require("jsonwebtoken");
 
 const express = require("express");
@@ -8,7 +8,8 @@ const router = express.Router();
 const zod = require("zod");
 
 const signupSchema = zod.object({
-  username: zod.string(),
+  userName: zod.string(),
+  FirstName: zod.string(),
   password: zod.string(),
   email: zod.string(),
 });
@@ -16,8 +17,8 @@ const signupSchema = zod.object({
 router.post("/signup", async (req, res, next) => {
   const body = req.body;
 
-  const { sucess } = signupSchema.safeParse(req.body);
-  if (!sucess) {
+  const { success } = signupSchema.safeParse(req.body);
+  if (!success) {
     return res.json({
       msg: "Enter valid details",
     });
@@ -39,6 +40,11 @@ router.post("/signup", async (req, res, next) => {
   res.json({
     msg: "User Created successfully",
     token: token,
+  });
+
+  await Account.create({
+    userId: dbUser._id,
+    balance: 1 + Math.random() * 10000,
   });
 });
 
@@ -77,7 +83,7 @@ const updateBody = zod.object({
   password: zod.string(),
   email: zod.string(),
 });
-router.put("/user", async (req, res, next, authMiddleware) => {
+router.put("/user", authMiddleware, async (req, res, next) => {
   const { success } = updateBody.safeParse(req.body);
   if (!success) {
     res.status(411).json({
@@ -116,4 +122,4 @@ router.get("/bulk", async (req, res, next) => {
   });
 });
 
-export const userRouter = express.Router();
+module.exports = router;
