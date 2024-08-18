@@ -1,7 +1,13 @@
+import { AppBar, Searchbar, User } from "../Components";
+
 const Dashboard = () => {
   return (
     <>
-      <div>Dashboard</div>
+      <div>
+        <AppBar />
+        <Searchbar />
+        <User />
+      </div>
     </>
   );
 };
