@@ -1,12 +1,13 @@
-import { AppBar, Searchbar, User } from "../Components";
+import { AppBar, Searchbar, Users } from "../Components";
+import { Balance } from "../Components/Balance";
 
 const Dashboard = () => {
   return (
     <>
       <div>
         <AppBar />
-        <Searchbar />
-        <User />
+        <Balance value={"10,000"} />
+        <Users />
       </div>
     </>
   );

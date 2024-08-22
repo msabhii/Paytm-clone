@@ -2,12 +2,14 @@ import { useState } from "react";
 import { Button, Heading, InputBox, Subheading } from "../Components";
 import { BottomWarning } from "../Components/BottomWarning";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function Signup() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleClick = async () => {
     const res = await axios.post("http://localhost:3000/api/v1/user/signup", {
@@ -16,7 +18,8 @@ export default function Signup() {
       username,
       password,
     });
-    console.log(res);
+    localStorage.setItem("token", res.data.token);
+    navigate("/dashboard");
   };
   return (
     <>

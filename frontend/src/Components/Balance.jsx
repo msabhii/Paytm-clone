@@ -1,5 +1,3 @@
-export const Balance = () => {
-    return <div>
-        Your Balance is 
-    </div>
+export const Balance = ({ value }) => {
+  return <div>Your Balance is: {value}</div>;
 };

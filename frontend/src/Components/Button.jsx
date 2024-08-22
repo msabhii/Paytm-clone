@@ -3,7 +3,7 @@ export const Button = ({ lable, onClick }) => {
     <div>
       <button
         onClick={onClick}
-        className="bg-slate-700 text-white pl-4 pr-4 pt-1 pb-1 w-full rounded-lg mt-3"
+        className="bg-slate-700 text-white pl-4 pr-4 pt-1 pb-1 w-auto rounded-lg mt-1 transition duration-300 hover:bg-slate-500"
       >
         {lable}
       </button>

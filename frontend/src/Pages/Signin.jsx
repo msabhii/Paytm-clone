@@ -18,12 +18,6 @@ const Signin = () => {
                   placeholder={"Enter your username"}
                   //? onChange={}
                 />
-                {/* <InputBox
-                  label={"Email"}
-                  placeholder={"Enter Your Email"}
-                  //! onChange={}
-                /> */}
-
                 <InputBox
                   label={"Password"}
                   placeholder={"Enter Your Password"}
